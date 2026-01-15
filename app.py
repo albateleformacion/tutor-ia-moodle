@@ -6,7 +6,6 @@ import openai
 app = Flask(__name__)
 CORS(app)
 
-# ⚠️ Tu clave debe estar como variable de entorno
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 @app.route("/")
@@ -25,14 +24,18 @@ Nunca des la respuesta directa. Solo guía con preguntas, ejemplos o pistas.
 Pregunta del alumno: {pregunta}
 Respuesta pedagógica:
 """
+
     try:
-        respuesta = openai.Completion.create(
-            model="text-davinci-003",
-            prompt=prompt,
-            max_tokens=150,
-            temperature=0.7
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "Eres un tutor pedagógico experto de física."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.7,
+            max_tokens=150
         )
-        texto_respuesta = respuesta.choices[0].text.strip()
+        texto_respuesta = response.choices[0].message.content.strip()
     except Exception as e:
         texto_respuesta = f"Error: {str(e)}"
 
