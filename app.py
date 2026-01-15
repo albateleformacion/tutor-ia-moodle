@@ -7,7 +7,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Cliente OpenAI (NUEVA API)
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = OpenAI()
 
 @app.route("/")
 def home():
